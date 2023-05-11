@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Recovery Score Calculator</title>
+  <!-- jQuery CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!-- Bootstrap 5 JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+  <!-- Bootstrap icons cdn -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+
+ <!-- import daterangepicker.com -->
+ <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
+</head>
+<style>
+</style>
+
+<body>
+  <div class="container">
+    <h1>Recovery Score Calculator</h1>
+
+
+    <div class="row">
+      <div class=" col-xs-12 col-md-6">
+
+        <div class="mb-1">
+          <label for="datepicker" class="form-label">Select a date:</label>
+          <input type="date" id="datepicker" name="datepicker" class="form-control">
+        </div>
+
+        <div class="mb-1">
+          <label for="rhr" class="form-label">Resting Heart Rate (RHR): </label>
+          <input type="number" id="rhr" name="rhr" class="form-control">
+        </div>
+
+        <div class="mb-1">
+          <label for="hrv" class="form-label">Heart Rate Variability (HRV): </label>
+          <input type="number" id="hrv" name="hrv" class="form-control">
+        </div>
+
+        <div class="mb-1">
+          <label for="sleepscore" class="form-label">Sleep Score: </label>
+          <input type="number" id="sleepscore" name="sleepscore" class="form-control">
+        </div>
+        <hr />
+      </div>
+
+      <div class=" col-xs-12 col-md-6 bg-secondary">
+
+        <div class="mb-1">
+          <label for="rhrmin" class="form-label">Historical RHR min: </label>
+          <input type="number" id="rhrmin" name="rhrmin" class="form-control">
+        </div>
+
+        <div class="mb-1">
+          <label for="rhrmax" class="form-label">Historical RHR max: </label>
+          <input type="number" id="rhrmax" name="rhrmax" class="form-control">
+        </div>
+
+        <div class="mb-1">
+          <label for="hrvmin" class="form-label">Historical HRV min: </label>
+          <input type="number" id="hrvmin" name="hrvmin" class="form-control">
+        </div>
+
+        <div class="mb-1">
+          <label for="hrvmax" class="form-label">Historical HRV max: </label>
+          <input type="number" id="hrvmax" name="hrvmax" class="form-control">
+        </div>
+        <hr />
+      </div>
+      <div class="row">
+        <div class="col">
+          <button onclick="submitForm()" id="btn-calculate" class="btn btn-secondary" type="button">Calculate Recovery
+            Score</button><br><br>
+          <h5 for="recoveryscore">Recovery Score: 
+          <output id="recoveryscore" name="recoveryscore"></output></h5>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col">
+          <p id="recovery-0-15" class="recommendations alert alert-danger align-items-center">
+            <i class="bi bi-exclamation-circle-fill me-2"></i>
+            <strong>0-15%:</strong> Very poor readiness for physical activity. Focus on getting adequate rest and
+            nutrition.
+            Consider taking a daily multivitamin to ensure adequate nutrient intake. Protein intake should be sufficient
+            to
+            meet
+            basic needs, but additional supplementation is not necessary.
+          </p>
+
+          <p id="recovery-15-30" class="recommendations alert alert-danger align-items-center">
+            <i class="bi bi-exclamation-circle-fill me-2"></i>
+            <strong>15-30%:</strong> Poor readiness for physical activity. Consider taking a daily multivitamin and a
+            protein
+            supplement to support recovery and muscle repair. Aim for a protein intake of at least 1.2 grams per
+            kilogram
+            of
+            body weight.
+          </p>
+
+          <p id="recovery-30-45" class="recommendations alert alert-warning align-items-center">
+            <i class="bi bi-exclamation-circle-fill me-2"></i>
+            <strong>30-45%:</strong> Suboptimal readiness for physical activity. Consider taking a daily multivitamin, a
+            protein
+            supplement, and a branched-chain amino acid (BCAA) supplement to support muscle recovery and reduce muscle
+            soreness.
+            Aim for a protein intake of at least 1.4 grams per kilogram of body weight.
+          </p>
+
+          <p id="recovery-45-60" class="recommendations alert alert-info align-items-center">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <strong>45-60%:</strong> Moderate readiness for physical activity. Consider taking a daily multivitamin, a
+            protein
+            supplement, and a BCAA supplement to support muscle recovery and reduce muscle soreness. Aim for a protein
+            intake
+            of
+            at least 1.6 grams per kilogram of body weight.
+          </p>
+
+          <p id="recovery-60-75" class="recommendations alert alert-info align-items-center">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <strong>60-75%:</strong> Good readiness for physical activity. Consider taking a daily multivitamin, a
+            protein
+            supplement, and a BCAA supplement to support muscle recovery and reduce muscle soreness. Aim for a protein
+            intake
+            of
+            at least 1.8 grams per kilogram of body weight.
+          </p>
+
+          <div id="recovery-75-90" class="recommendations alert alert-success align-items-center">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <strong>75-90%:</strong> Excellent readiness for physical activity. Consider taking a daily multivitamin, a
+            protein
+            supplement, and a BCAA supplement to support muscle recovery and reduce muscle soreness. Aim for a protein
+            intake
+            of
+            at least 2.0 grams per kilogram of body weight.
+          </div>
+          <div id="recovery-90-100" class="recommendations alert alert-success align-items-center">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <strong>90-100%:</strong> Optimal readiness for physical activity. Consider taking a daily multivitamin, a
+            protein
+            supplement, and a BCAA supplement to support muscle recovery and reduce muscle soreness. Aim for a protein
+            intake
+            of
+            at least 2.2 grams per kilogram of body weight. Be sure to also focus on adequate hydration and electrolyte
+            balance.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <hr>
+          <h4>History</h4>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col col-xs-12 col-xl-8">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover" id="resultsTable">
+              <thead>
+                <tr>
+                  <th>Date
+                  <th>Recovery Score</th>
+                  <th>HRV</th>
+                  <th>RHR</th>
+                  <th>Sleep score</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="index.js"></script>
+  
+  
+</body>
+
+</html>
+
+<!-- my hrv ranges between 62 and 86. Current HRV is 76. My rhr ranges between 53 and 59.. It's currently 58. My sleep score is 84 -->
